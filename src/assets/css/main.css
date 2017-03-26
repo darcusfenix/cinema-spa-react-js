@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: #efefef;
+}
+
+.float-right {
+
+    float: right;
+
+}
+
+.text-uppercase {
+    text-transform: uppercase;
+}
+
+.mn-float-a-btn {
+    position: fixed;
+    top: 100%;
+    left: 100%;
+    margin-top: -86px;
+    margin-left: -86px;
+}

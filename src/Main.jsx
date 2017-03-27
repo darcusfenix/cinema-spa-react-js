@@ -6,7 +6,7 @@ import IconButton from "material-ui/IconButton";
 import IconMenu from "material-ui/IconMenu";
 import MenuItem from "material-ui/MenuItem";
 import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
-import {hideDrawer, showDrawer} from "./modules/drawer/drawerActions";
+import {hideDrawer, showDrawer} from "./modules/main/mainActions";
 import drawerListItems from "./constants/menuItems";
 import {Header, CrisostomoTheme, Menu, Modal, Spinner} from "crisostomo-ui";
 
@@ -15,7 +15,8 @@ injectTapEventPlugin();
 @connect((store) => {
 
     return {
-        "drawerState": store.drawer
+        "drawerState": store.drawer,
+        "loadingPage": store.loadingPage
     };
 
 })
@@ -99,7 +100,7 @@ export default class Main extends Component {
 
                     {this.props.children}
 
-                    <Spinner visible={false}/>
+                    <Spinner visible={this.props.loadingPage}/>
 
                     <Modal open={false}
                            title={"Hola"}
@@ -118,6 +119,7 @@ export default class Main extends Component {
 
 Main.propTypes = {
     "drawerState": PropTypes.bool,
+    "loadingPage": PropTypes.bool,
     "children": PropTypes.node,
     "dispatch": PropTypes.func
 };

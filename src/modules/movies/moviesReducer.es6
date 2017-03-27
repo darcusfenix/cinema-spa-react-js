@@ -1,14 +1,26 @@
-import {ACTION_GET_MOVIES, store} from "./moviesConstants";
+import {
+    ACTION_GET_MOVIES,
+    ACTION_GET_COMMENTS,
+    store
+} from "./moviesConstants";
 
-const moviesReducer = (state = store.list, action) => {
+export const commentsReducer = (state = store.comments, action) => {
 
-    switch (action.type) {
-        case ACTION_GET_MOVIES:
-            return action.list;
-        default:
-            return state;
-    }
+        switch (action.type) {
+            case ACTION_GET_COMMENTS:
+                return action.list;
+            default:
+                return state;
+        }
 
-};
+    },
+    moviesReducer = (state = store.movies, action) => {
 
-export default moviesReducer;
+        switch (action.type) {
+            case ACTION_GET_MOVIES:
+                return action.list;
+            default:
+                return state;
+        }
+
+    };

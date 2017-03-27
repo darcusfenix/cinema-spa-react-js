@@ -5,7 +5,7 @@ import {GridTile} from "material-ui/GridList";
 
 const movieItem = (props) => {
 
-    const {movie} = props;
+    const {movie, index, onTouchTapComment} = props;
 
     return <div className="movies-column col-sm-6 col-md-3 col-xs-12">
 
@@ -14,7 +14,14 @@ const movieItem = (props) => {
             cols={1}
             rows={1}
             subtitle={movie.description}
-            actionIcon={<IconButton>
+            actionIcon={<IconButton
+                onTouchTap={
+                    () => {
+
+                        onTouchTapComment(index);
+
+                    }
+                }>
                 <Comment color="white"/>
             </IconButton>}>
             <div className="movies-gallery-container">
@@ -30,7 +37,9 @@ const movieItem = (props) => {
 
 
 movieItem.propTypes = {
-    "movie": PropTypes.object.isRequired
+    "movie": PropTypes.object.isRequired,
+    "index": PropTypes.number.isRequired,
+    "onTouchTapComment": PropTypes.func
 };
 
 

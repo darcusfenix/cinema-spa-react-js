@@ -1,12 +1,21 @@
 import React, {Component, PropTypes} from "react";
 import {connect} from "react-redux";
+import moment from "moment";
+//import {Modal} from "crisostomo-ui";
+import Modal from "../../widgets/Modal";
 import MovieItem from "./movieItem";
-import {getListMovies} from "./moviesActions";
+import {getListMovies, getCommentsByMovie} from "./moviesActions";
+import {List, ListItem} from "material-ui/List";
+import Subheader from "material-ui/Subheader";
+import Divider from "material-ui/Divider";
+import TextField from "material-ui/TextField";
 
 @connect((store) => {
 
     return {
-        "movies": store.movies
+        "loadingModal": store.loadingModal,
+        "movies": store.movies,
+        "comments": store.comments
     };
 
 })
@@ -15,6 +24,11 @@ export default class MoviesPage extends Component {
     constructor(props, context) {
 
         super(props, context);
+        this.state = {"showComments": false};
+        this.handleOnTouchTapCancel = this.handleOnTouchTapCancel.bind(this);
+        this.handleOnTouchTapOk = this.handleOnTouchTapOk.bind(this);
+        this.onTouchTapComment = this.onTouchTapComment.bind(this);
+        this.currentMovie = {};
 
     }
 
@@ -24,19 +38,86 @@ export default class MoviesPage extends Component {
 
     }
 
+    onTouchTapComment(index) {
+
+        this.setState({"showComments": true});
+
+        this.currentMovie = this.props.movies[index];
+        this.props.dispatch(getCommentsByMovie());
+
+    }
+
+    handleOnTouchTapCancel() {
+
+        this.setState({"showComments": false});
+
+    }
+
+
+    handleOnTouchTapOk() {
+
+        this.setState({"showComments": false});
+
+    }
+
     render() {
 
-        const buildMovieGallery = () => {
+        const buildComments = () => {
 
-            return this.props.movies.map((movie, i) => <MovieItem
-                key={`movie-grid-${i}`}
-                movie={movie}/>);
+                return this.props.comments.map((comment, i) => <ListItem
+                    key={`movie-comment-${i}`}
+                    primaryText={comment.message}
+                    secondaryText={moment(comment.date).fromNow()}/>);
 
-        };
+            },
+            buildMovieGallery = () => {
+
+                return this.props.movies.map((movie, i) => <MovieItem
+                    key={`movie-grid-${i}`}
+                    index={i}
+                    onTouchTapComment={this.onTouchTapComment}
+                    movie={movie}/>);
+
+            };
 
         return <div className="row movies-page-container">
 
             {buildMovieGallery()}
+
+            {
+                this.currentMovie.title &&
+                <Modal open={this.state.showComments}
+                       showSpinner={this.props.loadingModal}
+                       title={this.currentMovie.title}
+                       labelOK={"Comment"}
+                       labelCancel={"Close"}
+                       handleOnTouchTapOk={this.handleOnTouchTapOk}
+                       handleOnTouchTapCancel={this.handleOnTouchTapCancel}>
+                    <div className="row movie-comments-container">
+                        <div className="col-sm-12">
+                            <span className="movie-description-modal">
+                                {this.currentMovie.description}
+                            </span>
+                        </div>
+                        <div className="col-sm-12">
+                            <List>
+                                <Subheader>Comments</Subheader>
+                                {buildComments()}
+                            </List>
+                        </div>
+                        <Divider/>
+                        <div className="col-sm-12">
+                            <TextField
+                                floatingLabelText="write something..."
+                                multiLine={true}
+                                fullWidth={true}
+                                rows={2}
+                                rowsMax={4}
+                            />
+                        </div>
+                    </div>
+                </Modal>
+            }
 
         </div>;
 
@@ -46,5 +127,7 @@ export default class MoviesPage extends Component {
 
 MoviesPage.propTypes = {
     "dispatch": PropTypes.func,
-    "movies": PropTypes.array
+    "loadingModal": PropTypes.bool,
+    "movies": PropTypes.array,
+    "comments": PropTypes.array
 };

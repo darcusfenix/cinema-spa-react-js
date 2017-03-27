@@ -53,4 +53,29 @@ body {
     text-align: center;
 }
 
+.movie-comments-container {
+    padding-top: 7px;
+}
+
+.movie-description-modal {
+    text-align: justify;
+}
+
+.movie-comment {
+    border-top-left-radius: 1.3em;
+    clear: left;
+    word-wrap: break-word;
+    border: 1px solid #f1f0f0;
+    padding: 0;
+}
+.movie-comment-date, .movie-comment-message{
+    display: block;
+    margin-bottom: 3px;
+}
+.movie-comment-date{
+    font-size: 12px;
+}
+.movie-comment-message{
+    font-size: 12px;
+}
 /************** FIN MOVIES PAGE ******************/

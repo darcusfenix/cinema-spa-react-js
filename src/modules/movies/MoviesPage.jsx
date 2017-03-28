@@ -4,7 +4,7 @@ import moment from "moment";
 //import {Modal} from "crisostomo-ui";
 import Modal from "../../widgets/Modal";
 import MovieItem from "./movieItem";
-import {getListMovies, getCommentsByMovie} from "./moviesActions";
+import {getListMovies, getCommentsByMovie, saveComment, updateFormComment} from "./moviesActions";
 import {List, ListItem} from "material-ui/List";
 import Subheader from "material-ui/Subheader";
 import Divider from "material-ui/Divider";
@@ -27,6 +27,7 @@ export default class MoviesPage extends Component {
         this.state = {"showComments": false};
         this.handleOnTouchTapCancel = this.handleOnTouchTapCancel.bind(this);
         this.handleOnTouchTapOk = this.handleOnTouchTapOk.bind(this);
+        this.handleOnChangeTextField = this.handleOnChangeTextField.bind(this);
         this.onTouchTapComment = this.onTouchTapComment.bind(this);
         this.currentMovie = {};
 
@@ -53,10 +54,31 @@ export default class MoviesPage extends Component {
 
     }
 
-
     handleOnTouchTapOk() {
 
-        this.setState({"showComments": false});
+        const message = this.refs.message.getValue();
+
+        this.props.dispatch(saveComment({
+            "message": message,
+            "movie": this.currentMovie["_id"],
+            "title": "comment from the web"
+        }));
+
+        this.refs.message.value = " ";
+        this.refs.message.reset();
+
+    }
+
+    handleOnChangeTextField(event) {
+
+        event.preventDefault();
+        const field = event.target.name,
+            value = event.target.name;
+
+        this.props.dispatch(updateFormComment({
+            "value": value,
+            "name": field
+        }));
 
     }
 
@@ -108,12 +130,13 @@ export default class MoviesPage extends Component {
                         <Divider/>
                         <div className="col-sm-12">
                             <TextField
+                                name="message"
+                                ref="message"
                                 floatingLabelText="write something..."
                                 multiLine={true}
                                 fullWidth={true}
                                 rows={2}
-                                rowsMax={4}
-                            />
+                                rowsMax={4}/>
                         </div>
                     </div>
                 </Modal>

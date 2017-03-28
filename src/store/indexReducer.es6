@@ -1,5 +1,6 @@
 import {combineReducers} from "redux";
 import {
+    formCommentReducer as formComment,
     moviesReducer as movies,
     commentsReducer as comments
 } from "../modules/movies/moviesReducer";
@@ -12,6 +13,7 @@ import {
 const rootReducer = combineReducers({
     loadingPage,
     loadingModal,
+    formComment,
     drawer,
     movies,
     comments

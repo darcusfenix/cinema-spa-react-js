@@ -44,7 +44,7 @@ export default class MoviesPage extends Component {
         this.setState({"showComments": true});
 
         this.currentMovie = this.props.movies[index];
-        this.props.dispatch(getCommentsByMovie());
+        this.props.dispatch(getCommentsByMovie(this.currentMovie["_id"]));
 
     }
 
@@ -64,8 +64,7 @@ export default class MoviesPage extends Component {
             "title": "comment from the web"
         }));
 
-        this.refs.message.value = " ";
-        this.refs.message.reset();
+        this.refs.message.value = "";
 
     }
 

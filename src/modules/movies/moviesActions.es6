@@ -19,7 +19,12 @@ export const getCommentsByMovie = (movieId) => {
 
             dispatch({"type": ACTION_LOADING_MODAL, "flag": true});
 
-            return request({"url": ENDPOINT_COMMENTS}).then((response) => {
+            return request({
+                "url": ENDPOINT_COMMENTS,
+                "params": {
+                    "movie": movieId
+                }
+            }).then((response) => {
 
                 dispatch({"type": ACTION_COMMENTS_GET, "list": response});
 

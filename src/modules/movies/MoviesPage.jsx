@@ -33,7 +33,7 @@ export default class MoviesPage extends Component {
 
     }
 
-    componentWillMount() {
+    componentDidMount() {
 
         this.props.dispatch(getListMovies());
 

@@ -8,7 +8,7 @@ import MenuItem from "material-ui/MenuItem";
 import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
 import {hideDrawer, showDrawer} from "./modules/main/mainActions";
 import drawerListItems from "./constants/menuItems";
-import {connect as startConnection} from "./util/mqtt";
+import Notification from "./util/Notification";
 import {Header, CrisostomoTheme, Menu, Modal, Spinner} from "crisostomo-ui";
 
 injectTapEventPlugin();
@@ -77,7 +77,9 @@ export default class Main extends Component {
 
     componentDidMount() {
 
-        //startConnection();
+
+        const n = new Notification();
+
 
 
     }

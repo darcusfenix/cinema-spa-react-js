@@ -61,7 +61,7 @@
     // jquery global variables.
     "prototypejs": false,
     // prototypejs global variables.
-    "shelljs": false,
+    "shelljs": false
     // shelljs global variables.
   },
   "globals": {

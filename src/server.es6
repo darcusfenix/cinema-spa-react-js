@@ -1,5 +1,6 @@
 import express from "express";
 import webpack from "webpack";
+import shelljs from "shelljs";
 import path from "path";
 import config from "../webpack.config.dev";
 import open from "open";
@@ -33,7 +34,8 @@ app.listen(port, (err) => {
 
     } else {
 
-      //  open(`http://localhost:${port}`);
+        open(`http://localhost:${port}`);
+        console.log('\x1Bc');
 
     }
 

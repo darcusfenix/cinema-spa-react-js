@@ -7,6 +7,7 @@ import {
 import {
     loadingPageReducer as loadingPage,
     loadingModalReducer as loadingModal,
+    addNotificationReducer as notifications,
     drawerReducer as drawer
 } from "../modules/main/mainReducer";
 
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
     loadingModal,
     formComment,
     drawer,
+    notifications,
     movies,
     comments
 });

@@ -20,6 +20,7 @@
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-preset-env": "^1.2.1",
     "babel-preset-react": "^6.23.0",
+    "babel-preset-stage-2": "^6.24.1",
     "crisostomo-ui": "git+https://github.com/darcusfenix/cinema-components-react-js.git",
     "css-loader": "^0.27.3",
     "eslint": "^3.18.0",

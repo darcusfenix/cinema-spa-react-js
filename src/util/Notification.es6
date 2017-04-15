@@ -1,68 +1,35 @@
+/* global Paho */
+import {ACTION_ADD_NOTIFICATION} from "../modules/main/mainConstants";
+
 export default class Notification {
 
-    constructor() {
+    constructor(dispatch) {
 
-        const conexionExitosa = () => {
+        this.dispatch = dispatch;
+        this.client = {};
+        this.url = "activemq.crisostomo.soy";
+        this.port = 80;
+        this.id = "/activemq" + parseInt(Math.random() * 100, 10);
+        this.topics = ["comments", "movies"];
 
-                console.log("conexionExitosa");
-                client.subscribe("comments", {
-                    "timeout": 3000,
-                    "onFailure": onFailure,
-                    "onSuccess": onSuccess
-                });
+        this.client = new Paho.MQTT.Client(
+            this.url,
+            this.port,
+            this.id
+        );
 
+        this.client.onConnectionLost = this.onConnectionLost;
+        this.client.onMessageArrived = this.onMessageArrived;
 
-            },
-            conexionFallida = (e) => {
+    }
 
-                console.log(e);
-                setTimeout(this.conectarse, 5000);
-
-            },
-            conexionPerdida = (responseObject) => {
-
-            console.log(responseObject);
-                if (responseObject.errorCode !== 0) {
-
-                    setTimeout(this.conectarse, 5000);
-
-                }
-
-            },
-            mensajeRecibido = (message) => {
-
-            console.log(message.payloadString);
-                //alert(JSON.parse(message.payloadString));
-
-            },
-            onFailure = (invocationContext, errorCode) => {
-
-                console.log("onFailure");
-                console.error(invocationContext);
-                console.error(errorCode);
-
-            },
-            onSuccess = (invocationContext, errorCode) => {
-
-                console.log("onSuccess");
-                console.error(invocationContext);
-                console.error(errorCode);
-
-            };
-
-        const client = new Paho.MQTT.Client(
-            "activemq.crisostomo.soy",
-            80,
-            "/activemq" + parseInt(Math.random() * 100, 10));
-
-        client.onConnectionLost = conexionPerdida;
-        client.onMessageArrived = mensajeRecibido;
+    connect = () => {
 
         try {
 
-            client.connect({
-                "onSuccess": conexionExitosa,
-                "onFailure": conexionFallida,
+            this.client.connect({
+                "onSuccess": this.connectionSuccess,
+                "onFailure": this.connectionFailure,
                 "keepAliveInterval": 5,
                 "timeout": 5,
                 "useSSL": false
@@ -74,7 +41,91 @@ export default class Notification {
 
         }
 
-    }
+    };
+
+    connectionSuccess = () => {
+
+        console.log("connectionSuccess");
+        this.topics.map((topic) => {
+
+            this.client.subscribe(topic, {
+                "timeout": 3000,
+                "onFailure": this.subscribeFailure,
+                "onSuccess": this.subscribeSuccess
+            });
+
+        });
+
+    };
+
+    connectionFailure = (e) => {
+
+        console.log(e);
+        setTimeout(this.connect, 5000);
+
+    };
+
+    onConnectionLost = (responseObject) => {
+
+        console.log(responseObject);
+        if (responseObject.errorCode !== 0) {
+
+            setTimeout(this.connect, 5000);
+
+        }
+
+    };
+
+    onMessageArrived = (message) => {
+
+        switch (message.destinationName) {
+
+            case "comments":
+
+                this.dispatch({"type": ACTION_ADD_NOTIFICATION});
+                break;
+            case "movies":
+                debugger;
+                break;
+            default:
+                debugger;
+                break;
+
+        }
+
+        console.log(message.payloadString);
+
+    };
+
+    subscribeFailure = (invocationContext, errorCode) => {
+
+        console.log("subscribeFailure");
+        if (invocationContext) {
+
+            console.log(invocationContext);
+
+        } else if (errorCode) {
+
+            console.log(errorCode);
+
+        }
+
+    };
+
+    subscribeSuccess = (invocationContext, errorCode) => {
+
+        console.log("subscribeSuccess");
+        if (invocationContext) {
+
+            console.log(invocationContext);
+
+        } else if (errorCode) {
+
+            console.log(errorCode);
+
+        }
+
+    };
 
 }
 

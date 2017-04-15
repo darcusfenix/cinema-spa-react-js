@@ -1,10 +1,18 @@
 import {
     ACTION_LOADING_MAIN_PAGE,
     ACTION_TOGGLE_DRAWER,
-    ACTION_LOADING_MODAL
+    ACTION_LOADING_MODAL, ACTION_ADD_NOTIFICATION
 } from "./mainConstants";
 
-export const hideDrawer = () => {
+export const addNotification = () => {
+        debugger;
+        return (dispatch) => {
+            debugger;
+            dispatch({"type": ACTION_ADD_NOTIFICATION});
+
+        };
+
+    }, hideDrawer = () => {
 
         return (dispatch) => {
 

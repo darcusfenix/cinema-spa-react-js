@@ -5,11 +5,13 @@ import injectTapEventPlugin from "react-tap-event-plugin";
 import IconButton from "material-ui/IconButton";
 import IconMenu from "material-ui/IconMenu";
 import MenuItem from "material-ui/MenuItem";
+import Badge from "material-ui/Badge";
+import NotificationsIcon from "material-ui/svg-icons/social/notifications";
 import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
 import {hideDrawer, showDrawer} from "./modules/main/mainActions";
 import drawerListItems from "./constants/menuItems";
 import Notification from "./util/Notification";
-import {Header, CrisostomoTheme, Menu, Modal, Spinner} from "crisostomo-ui";
+import {Header, CrisostomoTheme, Menu, Spinner} from "crisostomo-ui";
 
 injectTapEventPlugin();
 
@@ -17,6 +19,7 @@ injectTapEventPlugin();
 
     return {
         "drawerState": store.drawer,
+        "notifications": store.notifications,
         "loadingPage": store.loadingPage
     };
 
@@ -77,23 +80,30 @@ export default class Main extends Component {
 
     componentDidMount() {
 
-
-        const n = new Notification();
-
-
+        const {dispatch} = this.props,
+            notif = new Notification(dispatch);
+        notif.connect();
 
     }
 
     render() {
 
-        const iconElementRight = <IconMenu
-            iconButtonElement={
-                <IconButton><MoreVertIcon /></IconButton>
-            }>
-            <MenuItem primaryText="Actualizar"/>
-            <MenuItem primaryText="Ayuda"/>
-            <MenuItem primaryText="Cerrar sesión"/>
-        </IconMenu>;
+        const iconElementRight = <div>
+            <Badge
+                badgeContent={this.props.notifications}
+                secondary={false}>
+                <NotificationsIcon
+                    style={{"color": "#FFF"}}/>
+            </Badge>
+            <IconMenu
+                style={{"color": "#FFF"}}
+                iconButtonElement={<IconButton
+                    iconStyle={{"color": "#FFF"}}>
+                    <MoreVertIcon /></IconButton>}>
+                <MenuItem primaryText="Actualizar"/>
+                <MenuItem primaryText="Ayuda"/>
+                <MenuItem primaryText="Cerrar sesión"/>
+            </IconMenu></div>;
 
         return (
             <CrisostomoTheme>
@@ -112,13 +122,7 @@ export default class Main extends Component {
 
                     <Spinner visible={this.props.loadingPage}/>
 
-                    <Modal open={false}
-                           title={"Hola"}
-                           showSpinner={false}
-                           handleOnTouchTapOk={this.handleOnTouchModal}
-                           handleOnTouchTapCancel={this.handleOnTouchModal}>
-                        <h1>dsaads</h1>
-                    </Modal>
+
                 </div>
             </CrisostomoTheme>
         );
@@ -127,6 +131,7 @@ export default class Main extends Component {
 }
 
 Main.propTypes = {
+    "notifications": PropTypes.number,
     "drawerState": PropTypes.bool,
     "loadingPage": PropTypes.bool,
     "children": PropTypes.node,

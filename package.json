@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "babel-node src/server.es6",
     "start": "npm-run-all --parallel server eslint:watch",
+    "build": "npm-run-all server",
     "poststart": "clear",
     "eslint": "esw --ext .es6 --ext .jsx src -w",
     "eslint:watch": "npm run eslint -- --watch"
@@ -52,6 +53,7 @@
   "dependencies": {
     "axios": "^0.15.3",
     "moment": "^2.18.1",
-    "mqtt": "^2.5.0"
+    "mqtt": "^2.5.0",
+    "react-addons-update": "^15.5.2"
   }
 }

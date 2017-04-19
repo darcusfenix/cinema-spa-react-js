@@ -12,7 +12,6 @@ import {
 } from "../main/mainConstants";
 import request from "../../util/request";
 
-
 export const getCommentsByMovie = (movieId) => {
 
         return (dispatch) => {

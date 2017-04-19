@@ -1,5 +1,7 @@
 /* global Paho */
 import {ACTION_ADD_NOTIFICATION} from "../modules/main/mainConstants";
+import {ACTION_MOVIES_PUSH, ENDPOINT_MOVIES} from "../modules/movies/moviesConstants";
+import request from "../util/request";
 
 export default class Notification {
 
@@ -85,10 +87,21 @@ export default class Notification {
                 this.dispatch({"type": ACTION_ADD_NOTIFICATION});
                 break;
             case "movies":
-                debugger;
+
+                request({
+                    "url": `${ENDPOINT_MOVIES}/${message.payloadString}`
+                }).then((response) => {
+
+                    this.dispatch({"type": ACTION_ADD_NOTIFICATION});
+                    this.dispatch({"type": ACTION_MOVIES_PUSH, "movie": response});
+
+                }).catch((error) => {
+
+                }).then(() => {
+
+                });
                 break;
             default:
-                debugger;
                 break;
 
         }

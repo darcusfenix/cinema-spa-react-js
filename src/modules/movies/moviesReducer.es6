@@ -4,7 +4,7 @@ import {
     ACTION_COMMENTS_GET,
     ACTION_COMMENTS_POST,
     ACTION_FORM_COMMENT_UPDATE,
-    store
+    store, ACTION_MOVIES_PUSH
 } from "./moviesConstants";
 
 export const commentsReducer = (state = store.comments, action) => {
@@ -42,6 +42,11 @@ export const commentsReducer = (state = store.comments, action) => {
         switch (action.type) {
             case ACTION_MOVIES_GET:
                 return action.list;
+            case ACTION_MOVIES_PUSH:
+
+                return update([action.movie], {
+                    "$push": state
+                });
             default:
                 return state;
         }
